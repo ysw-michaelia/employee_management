@@ -40,7 +40,7 @@ const ProjectAssignment = mongoose.model('ProjectAssignment', {
     employee_id: String,
     project_code: String,
     start_date: Date
-}, 'project_assignments');
+}, 'projectassignments');
 
 //add new emplyee
 app.post('/api/employees', async (req, res) => {
@@ -62,6 +62,25 @@ app.post('/api/projects', async (req, res) => {
     }
 });
 
+//add new project assignment
+app.post('/api/projectassignments', async (req, res) => {
+    try {
+        const projectAssignment = await ProjectAssignment.create(req.body);
+        res.status(201).json(projectAssignment);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/api/projectassignments', async (req, res) => {
+    try {
+        const projectAssignments = await ProjectAssignment.find();
+        res.json(projectAssignments);
+    } catch (error) {
+        console.error('Error fetching project assignments:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
